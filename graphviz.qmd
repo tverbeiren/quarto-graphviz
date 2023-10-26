@@ -7,10 +7,7 @@ format:
     resources: comp.png
     embed-resources: true
     standalone: true
-  gfm:
-    embed-resources: true
-    standalone: true
-    mermaid-format: png
+  gfm: default
 engine: knitr
 ---
 
