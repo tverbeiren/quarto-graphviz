@@ -1,434 +1,26 @@
 ---
-title: Graphviz experiments
+title: Graphviz rendering issue
 format:
   html:
+    toc: true
     mermaid-format: svg
     resources: comp.png
     embed-resources: true
     standalone: true
+  gfm:
+    embed-resources: true
+    standalone: true
+    mermaid-format: png
 engine: knitr
 ---
 
+Graphviz supports multiple ways to include a `.png` file, either as a node background or in an HTML label.
 
-## Introduction
-
-## Example from the Quarto site
-
-```{dot}
-graph G {
-  layout=neato
-  run -- intr;
-  intr -- runbl;
-  runbl -- run;
-  run -- kernel;
-  kernel -- zombie;
-  kernel -- sleep;
-  kernel -- runmem;
-  sleep -- swap;
-  swap -- runswap;
-  runswap -- new;
-  runswap -- runmem;
-  new -- runmem;
-  sleep -- runmem;
-}
-```
-
-## More complicated example
-
-This one [from here](https://sketchviz.com/new) but does not work natively in Quarto v1.3.450. It does work in 1.4.xxx though:
-
-```{dot}
-
-digraph G {
-  graph [fontname = "Handlee"];
-  node [fontname = "Handlee"];
-  edge [fontname = "Handlee"];
-
-  bgcolor=transparent;
-
-  subgraph cluster_0 {
-    style=filled;
-    color=lightgrey;
-    node [style=filled,color=pink];
-    a0 -> a1 -> a2 -> a3;
-    label = "*process #1*";
-    fontsize = 20;
-  }
-
-  subgraph cluster_1 {
-    node [style=filled];
-    b0 -> b1 -> b2 -> b3;
-    label = "*process #2*";
-    fontsize = 20;
-    color=blue
-  }
-  start -> a0;
-  start -> b0;
-  a1 -> b3;
-  b2 -> a3;
-  a3 -> a0;
-  a3 -> end;
-  b3 -> end;
-
-  start [shape=Mdiamond];
-  end [shape=Msquare];
-}
-
-```
-
-## Hapiness
-
-```{dot}
-graph happiness {
-	labelloc="t"
-	label="Mind map of Happiness.\nTwopi radial graph."
-	fontname="URW Chancery L, Apple Chancery, Comic Sans MS, cursive"
-	layout=twopi; graph [ranksep=2];
-	edge [penwidth=5 color="#f0f0ff"]
-	node [fontname="URW Chancery L, Apple Chancery, Comic Sans MS, cursive"]
-	node [style="filled" penwidth=0 fillcolor="#f0f0ffA0" fontcolor=indigo]
-	Happiness [fontsize=50 fontcolor=red URL="https://en.wikipedia.org/wiki/Category:Happiness"]
-	node [fontsize=40]
-	Happiness -- {
-		Peace
-		Love
-		Soul
-		Mind
-		Life
-		Health
-	}
-	Life [fontcolor=seagreen]
-	Health [fontcolor=mediumvioletred]
-	node [fontsize=25]
-	Love [fontcolor=orchid URL="https://en.wikipedia.org/wiki/Category:Love"]
-	Love -- {
-		Giving
-		People
-		Beauty
-	}
-	Success [fontcolor=goldenrod]
-	Life -- {
-		Nature
-		Wellbeing
-		Success
-	}
-	Peace [URL="https://en.wikipedia.org/wiki/Category:Peace"]
-	Peace -- {
-		Connection
-		Relationship
-		Caring
-	}
-	Health -- {
-		Body
-		Recreation
-	}
-	Mind [URL="https://en.wikipedia.org/wiki/Category:Mind"]
-	Mind -- {
-		Cognition
-		Consciousness
-		Intelligence
-	}
-	Soul [URL="https://en.wikipedia.org/wiki/Soul"]
-	Soul -- {
-		Emotions
-		Self
-		Meditation
-	}
-	node [fontsize=""]
-	Beauty -- {
-		Esthetics
-		Art
-	}
-	People -- {
-		Family
-		Partner
-		Hug
-	}
-	Giving -- {
-		Feelings
-		Support
-	}
-	Self -- {
-		Delight
-		Joy
-		Expression 
-	}
-	Success -- {
-		Creation
-		Profit
-		Win
-		Career
-	}
-	Recreation -- {
-		Leisure
-		Sleep
-	}
-	Emotions [URL="https://en.wikipedia.org/wiki/Soul"]
-	Emotions -- {
-		Positiveness Tranquility
-	}
-	Self -- Emotions [weight=10 penwidth=1 style=dotted constraint=false]
-	Body -- {
-		Medicine Exercises Nutrition Water Heart
-	}
-	Wellbeing -- {
-		Home Work Finance Clothes Transport
-	}
-	Relationship -- {
-		Friends Community Society
-	}
-	Connection -- {
-		Acceptance
-		Forgiveness
-		Gratitude
-		Agreement
-	}
-	Caring -- {
-		Respect
-		Empathy
-		Help
-	}
-	Consciousness -- {
-		Awareness
-	}
-	Meditation -- {
-		Contemplation Breath
-	}
-	Cognition -- {
-		Imagination
-		Perception
-		Thinking
-		Understanding
-		Memory
-	}
-	Intelligence -- {
-		Learning
-		Experiment
-		Education
-	}
-	Nature -- {
-		Ocean
-		Forest
-		Pets
-		Wildlife
-	}
-	c [label="© 2020-2022 Costa Shulyupin" fontsize=12 shape=plain style="" fontcolor=gray]
-}
-```
-
-## Pictionary
-
-From: <https://sketchviz.com/flowcharts-in-graphviz>
-
-__TODO__: The font does not come out properly.
-
-
-```{dot}
-digraph G {
-  node [fontname = "Handlee"];
-  edge [fontname = "Handlee"];
-
-  
-  draw [ label = "Draw a picture" ];
-  win [ label = "You win!" ];
-  guess [ label = "Did they\nguess it?" ];
-  point [
-    label = "Point repeatedly\nto the same picture."
-  ];
-
-  draw -> guess;
-  
-  guess -> win [ label = "Yes" ];
-  point -> guess;
-  guess -> point [ label = "No" ];
-}
-```
-
-```{dot}
-digraph G {
-  node [fontname = "Handlee"];
-  edge [fontname = "Handlee"];
-
-  draw [
-    label = "Draw a picture";
-    shape = rect;
-  ];
-  win [
-    label = "You win!";
-    shape = oval;
-  ];
-  guess [
-    label = "Did they\nguess it?";
-    shape = diamond;
-  ];
-  point [
-    label = "Point repeatedly\nto the same picture.";
-    shape = rect;
-  ];
-
-  draw -> guess;
-  guess -> win [ label = "Yes" ];
-  point -> guess;
-  guess -> point [ label = "No" ];
-  {
-    rank=same;
-    guess; point; win;
-  }
-}
-```
-
-```{dot}
-digraph G {
-  node [fontname = "Handlee"];
-  edge [fontname = "Handlee"];
-
-  draw [
-    label = "Draw a picture";
-    shape = rect;
-  ];
-  win [
-    label = "You win!";
-    shape = oval;
-  ];
-  guess [
-    label = "Did they\nguess it?";
-    shape = diamond;
-  ];
-  point [
-    label = "Point repeatedly\nto the same picture.";
-    shape = rect;
-  ];
-
-  draw -> guess;
-  win -> guess [ label = "Yes"; dir=back ];
-  point -> guess;
-  guess -> point [ label = "No" ];
-  {
-    rank=same;
-    guess; point; win;
-  }
-}
-```
-
-
-```{dot}
-digraph G {
-  node [fontname = "Handlee"];
-  edge [fontname = "Handlee"];
-
-  draw [
-    label = "Draw a picture";
-    shape = rect;
-  ];
-  win [
-    label = "You win!";
-    shape = oval;
-  ];
-  guess [
-    label = "Did they\nguess it?";
-    shape = diamond;
-  ];
-  point [
-    label = "Point repeatedly\nto the same picture.";
-    shape = rect;
-  ];
-
-  draw -> guess;
-  win -> guess [ label = "Yes"; dir=back ];
-  point:s -> guess:s;
-  guess -> point [ label = "No" ];
-  {
-    rank=same;
-    guess; point; win;
-  }
-}
-```
-
-```{dot}
-digraph G {
-  node [fontname = "Handlee"];
-  edge [fontname = "Handlee"];
-
-  splines=false;
-  
-  draw [
-    label = "Draw a picture";
-    shape = rect;
-  ];
-  win [
-    label = "You win!";
-    shape = oval;
-  ];
-  guess [
-    label = "Did they\nguess it?";
-    shape = diamond;
-  ];
-  point [
-    label = "Point repeatedly\nto the same picture.";
-    shape = rect;
-  ];
-
-  draw -> guess;
-  win -> guess [ label = "Yes"; dir=back ];
-  guess -> point [ label = "No" ];
-
-  {
-    rank=same;
-    guess; point; win;
-  }
-  
-  {
-    rank=same;
-    guess2; point2; 
-  }
-  
-  guess2 [
-      label = "                     ";
-      color= white ;
-  ];
-  point2 [
-      label = "                       ";
-      color=white;
-  ];
-  
-  point:s -> point2:n [ arrowhead = none ];
-  guess2:n -> point2:n [ arrowhead = none ];
-  guess2:n -> guess:s;
-}
-```
-
-
-## Node style - simple
-
-```{dot}
-digraph {
-  node [ shape=component, style=filled, color=grey, skew=0.5 ]
-
-  A -> B -> C
-}
-```
-
-## Node style - running dot in a shell code block
-
-```{sh}
-#| echo: false
-#| output: asis
-#| eval: true
-
-dot -Tsvg > /tmp/graph.dot <<HERE
-digraph {
-  node [ shape=component, style=filled, color=grey, skew=0.5 ]
-
-  A -> B -> C
-}
-HERE
-
-cat /tmp/graph.dot | grep -v "DOCTYPE" | grep -v "svg11.dtd"
-```
-
-## Node style - html nodes 2
+## `image=...` attribute for nodes
 
 The `image=...` argument does not function in Quarto, the SVG is generated without any reference to the image itself.
+
+### Render using Quarto
 
 ```{dot}
 digraph back {
@@ -439,6 +31,8 @@ digraph back {
 
 }
 ```
+
+### Render Using `dot`
 
 Using `dot` on the CLI, it does render properly to SVG:
 
@@ -544,8 +138,9 @@ cat /tmp/graph.dot | grep -v "DOCTYPE" | grep -v "svg11.dtd"
 </svg>
 ```
 
+## HTML labels
 
-The following also works using `dot` but not in Quarto:
+### Render using Quarto
 
 ```{dot}
 digraph {
@@ -559,7 +154,29 @@ digraph {
 }
 ```
 
-What is it that Quarto does wrong?! This is the SVG that `dot` generates:
+### Render using `dot`
+
+```{sh}
+#| echo: false
+#| output: asis
+#| eval: true
+
+dot -Tsvg > /tmp/graph.dot <<HERE
+digraph {
+    ratio="fill";
+    size="10,10!";
+    margin="0,0";
+
+    node [shape=plain];
+    root [label=<<TABLE border="1"><TR><TD><IMG SRC="comp.png"/></TD></TR>
+                                   <TR><TD>text under</TD></TR></TABLE>>];
+}
+HERE
+
+cat /tmp/graph.dot | grep -v "DOCTYPE" | grep -v "svg11.dtd"
+```
+
+This is the SVG that `dot` generates:
 
 <svg width="720pt" height="478pt"
  viewBox="0.00 0.00 720.00 477.64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
