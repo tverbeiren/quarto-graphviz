@@ -3,7 +3,7 @@ title: Graphviz experiments
 format:
   html:
     mermaid-format: svg
-    resources: comp.png
+    resources: component.png
     embed-resources: true
     standalone: true
 engine: knitr
@@ -417,7 +417,7 @@ digraph {
 
 dot -Tsvg > /tmp/graph.dot <<HERE
 digraph {
-  node [ shape=component, style=filled, color=grey, skew=0.5 ]
+  node [ shape=component, style=filled, color=grey ]
 
   A -> B -> C
 }
@@ -433,7 +433,7 @@ The `image=...` argument does not function in Quarto, the SVG is generated witho
 ```{dot}
 digraph back {
   rankdir="LR"
-  node [ shape=none, fontsize="20", fontname="Helvetica", fontcolor="white", image="comp.png" ]
+  node [ shape=none, fontsize="20", fontname="Helvetica", fontcolor="white", image="component.png" ]
 
   A -> B -> {C,D} -> E -> G
 
@@ -449,12 +449,33 @@ Using `dot` on the CLI, it does render properly to SVG:
 
 dot -Tsvg > /tmp/graph.dot <<HERE
 digraph back {
-  size=9
-  rankdir="LR"
-  node [ shape=none, fontsize="20", fontname="monospace", fontcolor="white", image="comp.png" ]
-  edge [ penwidth=12 arrowsize=0.2 color="grey" ]
+  size=9;
+  rankdir="LR";
+  node [ shape=none, fontsize="10", fontname="monospace", fontcolor="grey", image="component-small.png" ]
+  edge [ penwidth=6 arrowsize=0.1 color="purple" ]
+
+  A [ label="step 1" ]
+  B [ label="step 2" ]
+  C [ label="step 3a" ]
+  D [ label="step 3b" ]
+  E [ label="step 4" ]
+  G [ label="step 5" ]
+
+  subgraph cluster {
+    style=filled;
+    color=blue;
+    B -> C;
+    label = "cluster"
+  }
+
+  {
+    rank=same
+    C;D    
+  }
 
   A -> B -> {C,D} -> E -> G
+
+  A -> E
 }
 HERE
 
@@ -475,7 +496,7 @@ digraph {
     margin="0,0";
 
     node [shape=plain];
-    root [label=<<TABLE border="1"><TR><TD><IMG SRC="comp.png"/></TD></TR>
+    root [label=<<TABLE border="1"><TR><TD><IMG SRC="component.png"/></TD></TR>
                                    <TR><TD>text under</TD></TR></TABLE>>];
 }
 HERE
