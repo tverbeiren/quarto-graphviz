@@ -10,6 +10,12 @@ engine: knitr
 ---
 
 
+```{ojs}
+html`
+<div id="output-div"></div>
+`
+```
+
 ## Introduction
 
 ## Example from the Quarto site
@@ -447,39 +453,42 @@ Using `dot` on the CLI, it does render properly to SVG:
 #| output: asis
 #| eval: true
 
-dot -Tsvg > /tmp/graph.dot <<HERE
+tmp_file=`mktemp`
+
+dot -Tsvg > $tmp_file <<HERE
 digraph back {
+  graph [class="DI"]
+  id = "tst"
   size=9;
   rankdir="LR";
-  node [ shape=none, fontsize="10", fontname="monospace", fontcolor="grey", image="component-small.png" ]
-  edge [ penwidth=6 arrowsize=0.1 color="purple" ]
+  nodesep = .2
+  ranksep = 1.1
+  pad=0.5
+  fontname="Hack Nerd Font Mono"
+  node [ shape=none imagescale=width fontname="Hack Nerd Font Mono" fontsize="10", fontcolor="grey", image="test-small.png" ]
+  edge [ arrowhead="onormal" penwidth=2 color="grey" ]
 
   A [ label="step 1" ]
-  B [ label="step 2" ]
-  C [ label="step 3a" ]
   D [ label="step 3b" ]
   E [ label="step 4" ]
   G [ label="step 5" ]
 
-  subgraph cluster {
-    style=filled;
-    color=blue;
-    B -> C;
-    label = "cluster"
-  }
-
-  {
-    rank=same
-    C;D    
+  subgraph cluster_sample {
+    nodesep = 0.1
+    style = "rounded"
+    bgcolor = "#575c9e"
+    fontcolor = "white"
+    label = "/ sample"
+    B [ label="step 2" fontcolor="black" ]
+    C [ label="step 3a" fontcolor="black" ]
   }
 
   A -> B -> {C,D} -> E -> G
 
-  A -> E
 }
 HERE
 
-cat /tmp/graph.dot | grep -v "DOCTYPE" | grep -v "svg11.dtd"
+cat $tmp_file | grep -v "DOCTYPE" | grep -v "svg11.dtd"
 ```
 
 The following also works using `dot` but not in Quarto. Therefore we render it using a shell code block.
@@ -503,4 +512,5 @@ HERE
 
 cat /tmp/graph.dot | grep -v "DOCTYPE" | grep -v "svg11.dtd"
 ```
+
 
